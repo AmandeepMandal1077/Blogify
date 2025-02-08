@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <%- include("./partials/head.ejs") %>
+        <title>Blog</title>
+    </head>
+    <body class="bg-gray-900 text-gray-100">
+        <%- include("./partials/nav.ejs") %>
+        <div class="container mx-auto m-4">
+            <h1 class="text-3xl font-bold"><%= blog.title %></h1>
+            <img
+                src="/<%= blog.coverImageURL %>"
+                alt=""
+                class="w-96 m-4 rounded"
+            />
+            <pre class="m-3 bg-gray-800 p-4 rounded"><%= blog.body %></pre>
+        </div>
+        <div class="container mx-auto m-4 flex items-center">
+            <img src="<%= (blog.createdBy.profileImageURL).replace("/public",
+            "") %>" alt="" class="w-10 h-10 rounded-full" />
+            <span class="ml-4"
+                >Created By : <%= blog.createdBy.fullName %></span
+            >
+        </div>
+        <div class="container mx-auto m-3">
+            <h1 class="text-2xl font-bold">
+                Comments (<%= comments.length %>)
+            </h1>
+            <% if (locals.user) { %>
+            <form
+                action="/blog/comment/<%= blog._id %>"
+                method="post"
+                class="m-4"
+            >
+                <input
+                    type="text"
+                    class="w-full p-2 bg-gray-800 text-gray-100 rounded"
+                    id="content"
+                    name="content"
+                    placeholder="Enter your comment"
+                />
+                <button
+                    type="submit"
+                    class="m-2 px-4 py-2 bg-blue-500 text-white rounded"
+                >
+                    Add
+                </button>
+            </form>
+            <% } %>
+            <div class="m-3">
+                <% comments.forEach(comment => { %>
+                <div class="m-4">
+                    <img src="<%=
+                    (comment.createdBy.profileImageURL).replace("/public", "")
+                    %>" alt="" class="w-8 h-8 rounded-full inline-block" />
+                    <span class="ml-2"><%= comment.createdBy.fullName %></span>
+                    <pre class="m-2 bg-gray-800 p-2 rounded">
+<%= comment.content %></pre
+                    >
+                </div>
+                <% }) %>
+            </div>
+        </div>
+    </body>
+</html>

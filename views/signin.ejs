@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <%- include("./partials/head.ejs") %>
+        <title>Sign In</title>
+    </head>
+    <body class="bg-gray-900 text-gray-100">
+        <%- include("./partials/nav.ejs") %>
+        <div class="container mx-auto m-4">
+            <form action="/user/signin" method="post">
+                <div class="m-3">
+                    <label for="email" class="block text-gray-300"
+                        >Email address</label
+                    >
+                    <input
+                        type="email"
+                        class="w-96 p-2 bg-gray-800 text-gray-100 rounded"
+                        id="email"
+                        name="email"
+                    />
+                </div>
+                <div class="m-3">
+                    <label for="password" class="block text-gray-300"
+                        >Password</label
+                    >
+                    <input
+                        type="password"
+                        class="w-96 p-2 bg-gray-800 text-gray-100 rounded"
+                        id="password"
+                        name="password"
+                    />
+                </div>
+                <button
+                    type="submit"
+                    class="px-4 py-2 m-3 bg-blue-500 text-white rounded"
+                >
+                    Submit
+                </button>
+            </form>
+        </div>
+    </body>
+</html>

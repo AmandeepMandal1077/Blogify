@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <%- include("./partials/head.ejs") %>
+        <title>Add New Blog</title>
+    </head>
+    <body class="bg-gray-900 text-gray-100">
+        <%- include("./partials/nav.ejs") %>
+        <div class="container mx-auto m-3">
+            <form action="/blog" method="post" enctype="multipart/form-data">
+                <div class="mb-3">
+                    <label for="coverImage" class="block text-gray-300"
+                        >Cover Image</label
+                    >
+                    <input
+                        type="file"
+                        class="w-full m-3 p-2 bg-gray-800 text-gray-100 rounded"
+                        id="coverImage"
+                        name="coverImage"
+                    />
+                </div>
+                <div class="mb-3">
+                    <label for="title" class="block text-gray-300">Title</label>
+                    <input
+                        type="text"
+                        class="w-full p-2 m-3 bg-gray-800 text-gray-100 rounded"
+                        id="title"
+                        name="title"
+                    />
+                </div>
+                <div class="mb-3">
+                    <label for="body" class="block text-gray-300">Body</label>
+                    <textarea
+                        class="w-full p-2 m-3 bg-gray-800 text-gray-100 rounded"
+                        name="body"
+                        id="body"
+                    ></textarea>
+                </div>
+                <button
+                    type="submit"
+                    class="px-4 py-2 m-3 bg-blue-500 text-white rounded"
+                >
+                    Submit
+                </button>
+            </form>
+        </div>
+    </body>
+</html>

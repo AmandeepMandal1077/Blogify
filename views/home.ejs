@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <%- include("./partials/head.ejs") %>
+        <title>Home Page</title>
+    </head>
+    <body class="bg-gray-900 text-gray-100">
+        <%- include("./partials/nav.ejs") %>
+        <div
+            class="container mx-auto m-8 grid md:grid-cols-3 grid-cols-1 gap-8"
+        >
+            <% blogs.forEach(blog => { %>
+            <div class="bg-gray-800 p-4 rounded shadow">
+                <img
+                    src="<%= blog.coverImageURL %>"
+                    class="w-full h-auto rounded"
+                />
+                <h5 class="text-lg font-bold mt-2"><%= blog.title %></h5>
+                <a
+                    href="/blog/<%= blog._id %>"
+                    class="inline-block mt-2 px-4 py-2 bg-blue-500 text-white rounded"
+                    >View</a
+                >
+            </div>
+            <% }) %>
+        </div>
+    </body>
+</html>

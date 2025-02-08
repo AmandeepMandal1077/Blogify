@@ -1,0 +1,89 @@
+<nav class="bg-gray-800 p-4">
+    <div class="container mx-auto flex justify-between items-center">
+        <p class="text-white font-bold">Blogify</p>
+        <div class="flex items-center">
+            <ul class="flex space-x-4">
+                <li>
+                    <a class="text-gray-300 hover:text-white" href="/">Home</a>
+                </li>
+                <% if (locals.user) { %>
+                <li>
+                    <a
+                        class="text-gray-300 hover:text-white"
+                        href="/blog/add-new"
+                        >Add Blog</a
+                    >
+                </li>
+                <li class="relative group">
+                    <div class="container mx-auto flex">
+                        <a
+                            id="user-name"
+                            class="text-gray-300 hover:text-white cursor-pointer"
+                        >
+                            <%= locals.user.fullName %></a
+                        >
+                        <img src="<%=
+                        (locals.user.profileImageURL).replace("/public", "") %>"
+                        alt="" class="w-10 mx-2 rounded-full" >
+                    </div>
+                    <ul
+                        id="logout-menu"
+                        class="absolute right-0 mt-2 w-48 bg-gray-700 text-gray-300 rounded shadow-lg hidden"
+                    >
+                        <li>
+                            <a
+                                class="px-4 py-2 hover:bg-gray-600 block"
+                                href="/user/logout"
+                                >Logout</a
+                            >
+                        </li>
+                    </ul>
+                </li>
+
+                <script>
+                    document.addEventListener("DOMContentLoaded", function () {
+                        const userName = document.getElementById("user-name");
+                        const logoutMenu =
+                            document.getElementById("logout-menu");
+
+                        userName.addEventListener("click", function (event) {
+                            event.stopPropagation(); // Prevents closing immediately when clicking
+                            logoutMenu.classList.toggle("hidden");
+                        });
+
+                        document.addEventListener("click", function (event) {
+                            if (
+                                !userName.contains(event.target) &&
+                                !logoutMenu.contains(event.target)
+                            ) {
+                                logoutMenu.classList.add("hidden");
+                            }
+                        });
+                    });
+                </script>
+
+                <% } else { %>
+                <li>
+                    <a
+                        class="text-gray-300 hover:text-white"
+                        href="/user/signup"
+                        >Create account</a
+                    >
+                </li>
+                <li>
+                    <a
+                        class="text-gray-300 hover:text-white"
+                        href="/user/signin"
+                        >SignIn</a
+                    >
+                </li>
+                <% } %>
+            </ul>
+        </div>
+    </div>
+</nav>
+<% if (locals.error) { %>
+<div class="container mx-auto mt-4">
+    <div class="bg-red-500 text-white p-4 rounded"><%= locals.error %></div>
+</div>
+<% } %>
