@@ -6,7 +6,7 @@ const Comment = require("../models/comment.model");
 const router = express.Router();
 
 const { CloudinaryStorage } = require("multer-storage-cloudinary");
-const cloudinary = require("../cloudinaryConfig");
+const cloudinary = require("../cloudinaryConfig.js");
 
 const storage = new CloudinaryStorage({
     cloudinary: cloudinary,
@@ -28,12 +28,14 @@ router.get("/add-new", (req, res) => {
 
 router.post("/", upload.single("coverImage"), async (req, res) => {
     const { title, body } = req.body;
-    const coverImageURL = req.file.path;
+    // if (!req.file) {
+    //     const coverImageURL = req.file.path;
+    // }
 
     const newBlog = await Blog.create({
         title,
         body,
-        coverImageURL,
+        coverImageURL: req.file?.path,
         createdBy: req.user._id,
     });
 
