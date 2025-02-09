@@ -13,7 +13,11 @@
                 alt=""
                 class="w-96 m-4 rounded"
             />
-            <pre class="m-3 bg-gray-800 p-4 rounded"><%= blog.body %></pre>
+            <pre
+                class="m-3 bg-gray-800 w-95 p-4 rounded whitespace-pre-wrap break-words"
+            >
+<%= blog.body %></pre
+            >
         </div>
         <div class="container mx-auto m-4 flex items-center">
             <img src="<%= (blog.createdBy.profileImageURL).replace("/public",
