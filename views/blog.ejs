@@ -9,8 +9,8 @@
         <div class="container mx-auto m-4">
             <h1 class="text-3xl font-bold"><%= blog.title %></h1>
             <img src="/<%=
-            blog.coverImageURL.replace(`http://localhost:${process.env.PORT}//`,
-            "") %>"" onerror="this.onerror=null;
+            blog.coverImageURL.replace(`http://localhost:${process.env.PORT}/`,
+            "") %>" onerror="this.onerror=null;
             this.src='/images/blogDefault.png';" alt="" class="w-96 m-4 rounded"
             />
             <pre
