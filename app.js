@@ -36,12 +36,21 @@ app.use(express.static(path.resolve("./public")));
 app.set("view engine", "ejs");
 app.set("views", path.resolve("./views"));
 
+// app.get("/", async (req, res) => {
+//     const allBlogs = await Blog.find({});
+//     res.render("home.ejs", {
+//         user: req.user,
+//         blogs: allBlogs,
+//     });
+// });
 app.get("/", async (req, res) => {
-    const allBlogs = await Blog.find({});
-    res.render("home.ejs", {
-        user: req.user,
-        blogs: allBlogs,
-    });
+    try {
+        const blogs = await Blog.find().populate("createdBy");
+        res.render("home", { user: req.user, blogs });
+    } catch (error) {
+        console.error("Error fetching blogs:", error);
+        res.render("home", { user: req.user, blogs: [] });
+    }
 });
 
 app.use("/user", userRoute);

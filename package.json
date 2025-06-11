@@ -10,6 +10,8 @@
     "license": "ISC",
     "description": "",
     "dependencies": {
+        "animate.css": "^4.1.1",
+        "aos": "^2.3.4",
         "cloudinary": "^1.41.3",
         "cookie-parser": "^1.4.7",
         "cors": "^2.8.5",

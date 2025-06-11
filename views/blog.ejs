@@ -2,70 +2,192 @@
 <html lang="en">
     <head>
         <%- include("./partials/head.ejs") %>
-        <title>Blog</title>
+        <title><%= blog.title %> - Blogify</title>
     </head>
-    <body class="bg-gray-900 text-gray-100">
+    <body
+        class="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-violet-900 text-white"
+    >
         <%- include("./partials/nav.ejs") %>
-        <div class="container mx-auto m-4">
-            <h1 class="text-3xl font-bold"><%= blog.title %></h1>
-            <img
-                src="<%=
-            blog.coverImageURL
-            %>"
-                alt=""
-                class="w-96 m-4 rounded"
-            />
-            <pre
-                class="m-3 bg-gray-800 w-95 p-4 rounded whitespace-pre-wrap break-words"
-            >
-<%= blog.body %></pre
-            >
-        </div>
-        <div class="container mx-auto m-4 flex items-center">
-            <img src="<%= (blog.createdBy.profileImageURL).replace("/public",
-            "") %>" alt="" class="w-10 h-10 rounded-full" />
-            <span class="ml-4"
-                >Created By : <%= blog.createdBy.fullName %></span
-            >
-        </div>
-        <div class="container mx-auto m-3">
-            <h1 class="text-2xl font-bold">
-                Comments (<%= comments.length %>)
-            </h1>
-            <% if (locals.user) { %>
-            <form
-                action="/blog/comment/<%= blog._id %>"
-                method="post"
-                class="m-4"
-            >
-                <input
-                    type="text"
-                    class="w-full p-2 bg-gray-800 text-gray-100 rounded"
-                    id="content"
-                    name="content"
-                    placeholder="Enter your comment"
-                />
-                <button
-                    type="submit"
-                    class="m-2 px-4 py-2 bg-blue-500 text-white rounded"
+
+        <div class="container mx-auto px-4 py-8">
+            <!-- Blog Header -->
+            <div class="text-center mb-12" data-aos="fade-up">
+                <h1
+                    class="m-8 p-4 text-5xl font-bold mb-6 bg-gradient-to-r from-yellow-400 via-red-500 to-pink-500 bg-clip-text text-transparent"
                 >
-                    Add
-                </button>
-            </form>
-            <% } %>
-            <div class="m-3">
-                <% comments.forEach(comment => { %>
-                <div class="m-4">
-                    <img src="<%=
-                    (comment.createdBy.profileImageURL).replace("/public", "")
-                    %>" alt="" class="w-8 h-8 rounded-full inline-block" />
-                    <span class="ml-2"><%= comment.createdBy.fullName %></span>
-                    <pre class="m-2 bg-gray-800 p-2 rounded">
-<%= comment.content %></pre
+                    <%= blog.title %>
+                </h1>
+
+                <div
+                    class="flex items-center justify-center mb-8"
+                    data-aos="fade-up"
+                    data-aos-delay="200"
+                >
+                    <% if (blog.createdBy && blog.createdBy.profileImageURL) {
+                    %>
+                    <img
+                        src="<%= blog.createdBy.profileImageURL.replace('/public', '') %>"
+                        alt="Author"
+                        class="w-12 h-12 rounded-full mr-4 border-2 border-purple-400 glow"
+                    />
+                    <% } else { %>
+                    <div
+                        class="w-12 h-12 rounded-full mr-4 border-2 border-purple-400 bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center glow"
+                    >
+                        <i class="fas fa-user text-white"></i>
+                    </div>
+                    <% } %>
+                    <div class="text-left">
+                        <p class="text-lg font-semibold text-purple-300">
+                            <%= blog.createdBy ? blog.createdBy.fullName :
+                            'Anonymous' %>
+                        </p>
+                        <p class="text-gray-400 text-sm">Author</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Blog Image -->
+            <div class="mb-12" data-aos="zoom-in">
+                <div class="max-w-4xl mx-auto">
+                    <div
+                        class="relative overflow-hidden rounded-2xl shadow-2xl hover-scale"
+                    >
+                        <% if (blog.coverImageURL) { %>
+                        <img
+                            src="<%= blog.coverImageURL %>"
+                            alt="<%= blog.title %>"
+                            class="w-full max-w-4xl mx-auto rounded-2xl shadow-2xl"
+                        />
+                        <% } else { %>
+                        <div
+                            class="w-full max-w-4xl mx-auto h-96 bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center"
+                        >
+                            <i
+                                class="fas fa-image text-6xl text-white opacity-50"
+                            ></i>
+                        </div>
+                        <% } %>
+                        <div
+                            class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-30"
+                        ></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Blog Content -->
+            <div class="max-w-4xl mx-auto" data-aos="fade-up">
+                <div class="glass-effect rounded-2xl p-8 mb-12 shadow-2xl">
+                    <pre
+                        class="whitespace-pre-wrap text-lg leading-relaxed text-gray-100 font-sans"
+                    >
+<%= blog.body %></pre
                     >
                 </div>
-                <% }) %>
+            </div>
+
+            <!-- Comments Section -->
+            <div class="max-w-4xl mx-auto" data-aos="fade-up">
+                <div class="glass-effect rounded-2xl p-8 shadow-2xl">
+                    <h2 class="text-3xl font-bold mb-8 flex items-center">
+                        <i class="fas fa-comments mr-3 text-purple-400"></i>
+                        Comments (<%= comments.length %>)
+                    </h2>
+
+                    <!-- Add Comment Form -->
+                    <% if (locals.user) { %>
+                    <form
+                        action="/blog/comment/<%= blog._id %>"
+                        method="post"
+                        class="mb-8"
+                        data-aos="fade-up"
+                    >
+                        <div class="flex items-start space-x-4">
+                            <% if (locals.user.profileImageURL) { %>
+                            <img
+                                src="<%= locals.user.profileImageURL.replace('/public', '') %>"
+                                alt="Your Avatar"
+                                class="w-10 h-10 rounded-full border-2 border-purple-400"
+                            />
+                            <% } else { %>
+                            <div
+                                class="w-10 h-10 rounded-full border-2 border-purple-400 bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center"
+                            >
+                                <i class="fas fa-user text-white text-sm"></i>
+                            </div>
+                            <% } %>
+                            <div class="flex-1">
+                                <textarea
+                                    name="content"
+                                    placeholder="Share your thoughts..."
+                                    class="w-full p-4 bg-gray-800 bg-opacity-50 border border-gray-600 rounded-xl text-white placeholder-gray-400 focus:border-purple-400 focus:ring-2 focus:ring-purple-400 focus:outline-none transition-all duration-300"
+                                    rows="3"
+                                ></textarea>
+                                <button
+                                    type="submit"
+                                    class="mt-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white px-6 py-2 rounded-full hover:from-purple-600 hover:to-pink-600 transition-all duration-300 transform hover:scale-105 glow"
+                                >
+                                    <i class="fas fa-paper-plane mr-2"></i>Post
+                                    Comment
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                    <% } %>
+
+                    <!-- Comments List -->
+                    <div class="space-y-6">
+                        <% comments.forEach((comment, index) => { %>
+                        <div
+                            class="bg-gray-800 bg-opacity-30 rounded-xl p-6 hover:bg-opacity-50 transition-all duration-300"
+                            data-aos="fade-right"
+                            data-aos-delay="<%= index * 100 %>"
+                        >
+                            <div class="flex items-start space-x-4">
+                                <% if (comment.createdBy &&
+                                comment.createdBy.profileImageURL) { %>
+                                <img
+                                    src="<%= comment.createdBy.profileImageURL.replace('/public', '') %>"
+                                    alt="Commenter"
+                                    class="w-10 h-10 rounded-full border-2 border-gray-500"
+                                />
+                                <% } else { %>
+                                <div
+                                    class="w-10 h-10 rounded-full border-2 border-gray-500 bg-gradient-to-br from-gray-600 to-gray-700 flex items-center justify-center"
+                                >
+                                    <i
+                                        class="fas fa-user text-white text-sm"
+                                    ></i>
+                                </div>
+                                <% } %>
+                                <div class="flex-1">
+                                    <div class="flex items-center mb-2">
+                                        <h4
+                                            class="font-semibold text-purple-300"
+                                        >
+                                            <%= comment.createdBy ?
+                                            comment.createdBy.fullName :
+                                            'Anonymous' %>
+                                        </h4>
+                                        <span class="text-gray-500 text-sm ml-2"
+                                            >•</span
+                                        >
+                                        <span class="text-gray-500 text-sm ml-2"
+                                            >Just now</span
+                                        >
+                                    </div>
+                                    <p class="text-gray-100 leading-relaxed">
+                                        <%= comment.content %>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <% }) %>
+                    </div>
+                </div>
             </div>
         </div>
+
+        <%- include("./partials/scripts.ejs") %>
     </body>
 </html>

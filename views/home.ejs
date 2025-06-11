@@ -2,27 +2,142 @@
 <html lang="en">
     <head>
         <%- include("./partials/head.ejs") %>
-        <title>Home Page</title>
+        <title>Blogify - Amazing Blogs</title>
     </head>
-    <body class="bg-gray-900 text-gray-100">
+    <body
+        class="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-violet-900 text-white"
+    >
         <%- include("./partials/nav.ejs") %>
+
+        <!-- Hero Section - Added proper padding-top to account for fixed navbar -->
         <div
-            class="container mx-auto m-8 grid md:grid-cols-3 grid-cols-1 gap-8"
+            class="container mx-auto px-4 pt-24 pb-12 text-center"
+            data-aos="fade-up"
         >
-            <% blogs.forEach(blog => { %>
-            <div class="bg-gray-800 p-4 rounded shadow">
-                <img
-                    src="<%= blog.coverImageURL %>"
-                    class="w-full h-auto rounded"
-                />
-                <h5 class="text-lg font-bold mt-2"><%= blog.title %></h5>
-                <a
-                    href="/blog/<%= blog._id %>"
-                    class="inline-block mt-2 px-4 py-2 bg-blue-500 text-white rounded"
-                    >View</a
-                >
-            </div>
-            <% }) %>
+            <h1
+                class="text-4xl md:text-5xl lg:text-6xl font-bold mb-8 bg-gradient-to-r from-yellow-400 via-red-500 to-pink-500 bg-clip-text text-transparent p-4 animate__animated animate__fadeInDown leading-tight"
+            >
+                Welcome to Blogify
+            </h1>
+            <p
+                class="text-lg md:text-xl text-gray-300 mb-8 animate__animated animate__fadeInUp animate__delay-1s max-w-2xl mx-auto"
+            >
+                Discover amazing stories, share your thoughts, and connect with
+                fellow writers
+            </p>
         </div>
+
+        <!-- Blogs Grid -->
+        <div class="container mx-auto px-4 py-8">
+            <h2
+                class="text-3xl md:text-4xl font-bold text-center mb-12 text-white"
+                data-aos="fade-up"
+            >
+                Latest
+                <span
+                    class="bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent"
+                    >Blogs</span
+                >
+            </h2>
+
+            <div
+                class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8"
+            >
+                <% blogs.forEach((blog, index) => { %>
+                <div
+                    class="glass-effect rounded-2xl overflow-hidden shadow-2xl hover-scale group"
+                    data-aos="fade-up"
+                    data-aos-delay="<%= index * 100 %>"
+                >
+                    <div class="relative overflow-hidden">
+                        <% if (blog.coverImageURL) { %>
+                        <img
+                            src="<%= blog.coverImageURL %>"
+                            alt="<%= blog.title %>"
+                            class="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500"
+                        />
+                        <% } else { %>
+                        <div
+                            class="w-full h-48 bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center"
+                        >
+                            <i
+                                class="fas fa-image text-4xl text-white opacity-50"
+                            ></i>
+                        </div>
+                        <% } %>
+                        <div
+                            class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-0 group-hover:opacity-70 transition-opacity duration-300"
+                        ></div>
+                    </div>
+
+                    <div class="p-6">
+                        <h3
+                            class="text-xl font-bold mb-3 text-white group-hover:text-yellow-300 transition-colors duration-300 line-clamp-2"
+                        >
+                            <%= blog.title %>
+                        </h3>
+
+                        <div class="flex items-center mb-4 text-gray-300">
+                            <% if (blog.createdBy &&
+                            blog.createdBy.profileImageURL) { %>
+                            <img
+                                src="<%= blog.createdBy.profileImageURL.replace('/public', '') %>"
+                                alt="Author"
+                                class="w-8 h-8 rounded-full mr-3 border-2 border-purple-400"
+                            />
+                            <% } else { %>
+                            <div
+                                class="w-8 h-8 rounded-full mr-3 border-2 border-purple-400 bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center"
+                            >
+                                <i class="fas fa-user text-white text-xs"></i>
+                            </div>
+                            <% } %>
+                            <span class="text-sm">
+                                <%= blog.createdBy ? blog.createdBy.fullName :
+                                'Anonymous' %>
+                            </span>
+                        </div>
+
+                        <a
+                            href="/blog/<%= blog._id %>"
+                            class="inline-flex items-center bg-gradient-to-r from-purple-500 to-pink-500 text-white px-6 py-3 rounded-full hover:from-purple-600 hover:to-pink-600 transition-all duration-300 transform hover:scale-105 glow"
+                        >
+                            <i class="fas fa-eye mr-2"></i>Read More
+                        </a>
+                    </div>
+                </div>
+                <% }) %>
+            </div>
+
+            <% if (blogs.length === 0) { %>
+            <div class="text-center py-16" data-aos="fade-up">
+                <i class="fas fa-blog text-6xl text-gray-500 mb-4"></i>
+                <h3 class="text-2xl font-bold text-gray-400 mb-2">
+                    No Blogs Yet
+                </h3>
+                <p class="text-gray-500 mb-6">
+                    Be the first to share your amazing story!
+                </p>
+                <% if (locals.user) { %>
+                <a
+                    href="/blog/add-new"
+                    class="inline-flex items-center bg-gradient-to-r from-purple-500 to-pink-500 text-white px-8 py-4 rounded-full hover:from-purple-600 hover:to-pink-600 transition-all duration-300 transform hover:scale-105 glow"
+                >
+                    <i class="fas fa-plus mr-2"></i>Create Your First Blog
+                </a>
+                <% } else { %>
+                <a
+                    href="/user/signin"
+                    class="inline-flex items-center bg-gradient-to-r from-blue-500 to-teal-500 text-white px-8 py-4 rounded-full hover:from-blue-600 hover:to-teal-600 transition-all duration-300 transform hover:scale-105"
+                >
+                    <i class="fas fa-sign-in-alt mr-2"></i>Sign In to Create
+                    Blogs
+                </a>
+                <% } %>
+            </div>
+            <% } %>
+        </div>
+
+        <%- include("./partials/scripts.ejs") %>
     </body>
 </html>

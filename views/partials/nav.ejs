@@ -1,89 +1,92 @@
-<nav class="bg-gray-800 p-4">
+<nav
+    class="gradient-bg backdrop-blur-lg bg-opacity-90 p-4 fixed top-0 left-0 right-0 z-50 shadow-2xl"
+>
     <div class="container mx-auto flex justify-between items-center">
-        <p class="text-white font-bold">Blogify</p>
-        <div class="flex items-center">
-            <ul class="flex space-x-4">
-                <li>
-                    <a class="text-gray-300 hover:text-white" href="/">Home</a>
-                </li>
-                <% if (locals.user) { %>
-                <li>
+        <div class="flex items-center space-x-4">
+            <a
+                href="/"
+                class="text-white font-bold text-2xl hover:text-yellow-300 transition-colors"
+            >
+                <i class="fas fa-blog mr-2"></i>Blogify
+            </a>
+        </div>
+
+        <div class="hidden md:flex items-center space-x-6">
+            <% if (locals.user) { %>
+            <a
+                href="/"
+                class="text-white hover:text-yellow-300 transition-all duration-300 transform hover:scale-110"
+            >
+                <i class="fas fa-home mr-1"></i>Home
+            </a>
+            <a
+                href="/blog/add-new"
+                class="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-4 py-2 rounded-full hover:from-purple-600 hover:to-pink-600 transition-all duration-300 transform hover:scale-105 glow"
+            >
+                <i class="fas fa-plus mr-1"></i>Add Blog
+            </a>
+
+            <div class="relative group">
+                <div class="flex items-center cursor-pointer">
+                    <img
+                        src="<%= (locals.user.profileImageURL).replace('/public', '') %>"
+                        alt="Profile"
+                        class="w-10 h-10 rounded-full border-2 border-white shadow-lg hover:border-yellow-300 transition-all duration-300"
+                    />
+                    <span
+                        class="text-white ml-2 hover:text-yellow-300 transition-colors duration-300"
+                    >
+                        <%= locals.user.fullName %>
+                    </span>
+                    <i
+                        class="fas fa-chevron-down text-white ml-1 group-hover:rotate-180 transition-transform duration-300"
+                    ></i>
+                </div>
+
+                <div
+                    class="absolute right-0 mt-2 w-48 glass-effect rounded-xl shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform scale-95 group-hover:scale-100"
+                >
                     <a
-                        class="text-gray-300 hover:text-white"
-                        href="/blog/add-new"
-                        >Add Blog</a
+                        href="/user/logout"
+                        class="block px-4 py-3 text-white hover:bg-red-500 hover:bg-opacity-20 rounded-xl transition-all duration-300"
                     >
-                </li>
-                <li class="relative group">
-                    <div class="container mx-auto flex">
-                        <a
-                            id="user-name"
-                            class="text-gray-300 hover:text-white cursor-pointer"
-                        >
-                            <%= locals.user.fullName %></a
-                        >
-                        <img src="<%=
-                        (locals.user.profileImageURL).replace("/public", "") %>"
-                        alt="" class="w-10 mx-2 rounded-full" >
-                    </div>
-                    <ul
-                        id="logout-menu"
-                        class="absolute right-0 mt-2 w-48 bg-gray-700 text-gray-300 rounded shadow-lg hidden"
-                    >
-                        <li>
-                            <a
-                                class="px-4 py-2 hover:bg-gray-600 block"
-                                href="/user/logout"
-                                >Logout</a
-                            >
-                        </li>
-                    </ul>
-                </li>
+                        <i class="fas fa-sign-out-alt mr-2"></i>Logout
+                    </a>
+                </div>
+            </div>
+            <% } else { %>
+            <a
+                href="/user/signup"
+                class="text-white hover:text-yellow-300 transition-all duration-300 transform hover:scale-110"
+            >
+                <i class="fas fa-user-plus mr-1"></i>Sign Up
+            </a>
+            <a
+                href="/user/signin"
+                class="bg-gradient-to-r from-blue-500 to-teal-500 text-white px-4 py-2 rounded-full hover:from-blue-600 hover:to-teal-600 transition-all duration-300 transform hover:scale-105"
+            >
+                <i class="fas fa-sign-in-alt mr-1"></i>Sign In
+            </a>
+            <% } %>
+        </div>
 
-                <script>
-                    document.addEventListener("DOMContentLoaded", function () {
-                        const userName = document.getElementById("user-name");
-                        const logoutMenu =
-                            document.getElementById("logout-menu");
-
-                        userName.addEventListener("click", function (event) {
-                            event.stopPropagation(); // Prevents closing immediately when clicking
-                            logoutMenu.classList.toggle("hidden");
-                        });
-
-                        document.addEventListener("click", function (event) {
-                            if (
-                                !userName.contains(event.target) &&
-                                !logoutMenu.contains(event.target)
-                            ) {
-                                logoutMenu.classList.add("hidden");
-                            }
-                        });
-                    });
-                </script>
-
-                <% } else { %>
-                <li>
-                    <a
-                        class="text-gray-300 hover:text-white"
-                        href="/user/signup"
-                        >Create account</a
-                    >
-                </li>
-                <li>
-                    <a
-                        class="text-gray-300 hover:text-white"
-                        href="/user/signin"
-                        >SignIn</a
-                    >
-                </li>
-                <% } %>
-            </ul>
+        <!-- Mobile menu button -->
+        <div class="md:hidden">
+            <button
+                class="text-white hover:text-yellow-300 transition-colors duration-300"
+            >
+                <i class="fas fa-bars text-xl"></i>
+            </button>
         </div>
     </div>
 </nav>
+
 <% if (locals.error) { %>
-<div class="container mx-auto mt-4">
-    <div class="bg-red-500 text-white p-4 rounded"><%= locals.error %></div>
+<div class="container mx-auto mt-20 px-4" data-aos="fade-down">
+    <div
+        class="bg-red-500 text-white p-4 rounded-xl shadow-lg animate__animated animate__shakeX"
+    >
+        <i class="fas fa-exclamation-circle mr-2"></i><%= locals.error %>
+    </div>
 </div>
 <% } %>
